@@ -1,4 +1,4 @@
-# Amateur Basketball Broadcasting Camera System
+# Basketball Broadcaster
 
 ![](./images/Title.jpg "Cover")
 
