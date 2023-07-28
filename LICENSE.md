@@ -2,6 +2,7 @@ GNU AFFERO GENERAL PUBLIC LICENSE
 Version 3, 19 November 2007
 
 Copyright © 2023 Jaime Nebrera Herrera
+
 Based on previous work licensed as MIT by [Tryolabs](https://tryolabs.com/)
 
 Copyright © 2007 Free Software Foundation, Inc. <https://fsf.org/>
