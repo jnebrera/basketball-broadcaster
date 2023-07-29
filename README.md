@@ -20,13 +20,17 @@ The combination of the two makes it viable again to restart this project and be 
 
 # First goals
 
-The main difficulty we found in the previous iteration of the project was people and ball detection. Now we can try using ML techniques to do so, and especially, reduce false positives of people appearing in the camera but not in the field that caused quite a bit of issues in the past (coachs and players on the bench mainly).
+The main difficulty we found in the previous iteration of the project was people and ball detection. Now we can try using ML techniques to do so, and especially, reduce false positives of people appearing in the camera but not in the field that caused quite a bit of issues in the past (coaches and players on the bench mainly).
 
-Our first goal is to be able to detect players with a COCO pre trained YOLOv8 model (improving the YOLO v5 in the blog post) and it works quite well. As suggested by the authors, even upgrading YOLO to v8 is still not enough to detect the ball, so we are now training a custom model for player and basketball detection with a private dataset of around 4K labeled images.
+Our first goal is to be able to detect players with a COCO pre-trained YOLOv8 model (improving the YOLO v5 in the blog post) and it works quite well. 
 
 ![](./images/test1_clip~2.gif "Original") ![](./images/test1_clip_out~2.gif "Object Detection")
 
-Also, the way we are processing the video loses the audio, which is key for a good experience, so we are changing that with PyAV to maintain the original audio track.
+The above videos are not in the original quality, but at least you can notice the code detects quite well the players (and other people) even using the Nano size of the YOLO v8 model. In Google Colab we were processing at a rate of 40fps, doing detection in all frames that were sized 1.920 x 1.80 (FullHD) but still not in ultra panoramic format (4.608x1.728@20fps)
+
+But there are two things to solve. As suggested by the authors, even upgrading YOLO to v8 is still not enough to detect the ball, so we have to train a custom model for player and basketball detection with a private dataset of around 4K labeled images using transfer learning from a previous COCO. Hopefully, this model will improve the detection of the ball and also discard nonplayers (but this second is not needed too much as can be discarded afterward easily).
+
+Also, the way we are processing the video loses the audio, which is key for a good experience, so we are changing that with PyAV to maintain the original audio track. Lets see if this change doesn't affect too much the performance, but it is something mandatory for the project to make any sense.
 
 After that, we will add multi class Multi Object Tracking (MOT) based on Norfair to see if we can reduce the load on the system by limiting the number of frames we have to run detection while still maintaining an idea of the position of players and ball. 
 
