@@ -24,7 +24,7 @@ The main difficulty we found in the previous iteration of the project was people
 
 Our first goal is to be able to detect players with a COCO pre trained YOLOv8 model (improving the YOLO v5 in the blog post) and it works quite well. As suggested by the authors, even upgrading YOLO to v8 is still not enough to detect the ball, so we are now training a custom model for player and basketball detection with a private dataset of around 4K labeled images.
 
-![](./videos/test1_clip~2.mp4 "Original") ![](./videos/test1_clip_out~2.mp4 "Object Detection")
+![](./images/test1_clip~2.gif "Original") ![](./images/test1_clip_out~2.gif "Object Detection")
 
 Also, the way we are processing the video loses the audio, which is key for a good experience, so we are changing that with PyAV to maintain the original audio track.
 
