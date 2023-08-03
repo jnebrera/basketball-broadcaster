@@ -5,23 +5,13 @@ class YOLOv8:
     def __init__(self, model_name):
         self.model = YOLO(model_name)
 
-    def detect(self, img, score_thr=0.5, target_classes=[0]):
-        result = self.model.predict(source=img)[0]
+    def detect(self, img):
+        result = self.model.predict(source=img, conf=0.3, iou=0.3)[0]
         boxes = list(result.boxes.xyxy.cpu().data.numpy())  # box with xyxy format, (N, 4)
         scores = list(result.boxes.conf.cpu().data.numpy())  # confidence score, (N, 1)
         classes = list(result.boxes.cls.cpu().data.numpy())  # cls, (N, 1)
 
-        r_boxes = []
-        r_scores = []
-        r_classes = []
-
-        for box, score, cls in zip(boxes, scores, classes):
-            if cls in target_classes and score >= score_thr:
-                r_boxes.append(box)
-                r_scores.append(score)
-                r_classes.append(cls)
-
-        return r_boxes, r_scores, r_classes
+        return boxes, scores, classes
 
     def draw_detection(self, image, boxes, scores, classes):
         det_img = image.copy()
@@ -63,6 +53,8 @@ if __name__ == '__main__':
 
         boxes, scores, classes = detector.detect(image)
         result_image = detector.draw_detection(image, boxes, scores, classes)
+
+        result_image = cv2.resize(result_image, None, fx=0.5, fy=0.5)
         cv2.imshow('output', result_image)
         key = cv2.waitKey(1)
         if key == 27:
