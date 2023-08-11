@@ -7,9 +7,9 @@ class YOLOv8:
 
     def detect(self, img):
         result = self.model.predict(source=img, conf=0.3, iou=0.3)[0]
-        boxes = list(result.boxes.xyxy.cpu().data.numpy())  # box with xyxy format, (N, 4)
+        boxes = list(result.boxes.xyxy.cpu().data.numpy().astype(dtype=int))  # box with xyxy format, (N, 4)
         scores = list(result.boxes.conf.cpu().data.numpy())  # confidence score, (N, 1)
-        classes = list(result.boxes.cls.cpu().data.numpy())  # cls, (N, 1)
+        classes = list(result.boxes.cls.cpu().data.numpy().astype(dtype=int))  # cls, (N, 1)
 
         return boxes, scores, classes
 
