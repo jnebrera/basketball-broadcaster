@@ -26,7 +26,7 @@ def to_norfair_detections(boxes, scores, class_name):
 
 class PBDetector:
     def __init__(self):
-        self.detector = YOLOv8('yolov8m.pt')
+        self.detector = YOLOv8('yolov8n.pt')
 
     def detect(self, img):
         boxes, scores, cls_ids = self.detector.detect(img)
