@@ -38,6 +38,12 @@ It is important to understand that for our usage scenario (generating a broadcas
 
 Finally, we will remove a lot of the cloned code as it is not needed in our project (pass detection, team detection, player in possession detection, possession calculation, possession display) to leave the code as clean as possible.
 
+# Aug 5th 2023
+
+Thanks to PyAV library, we are now able to capture not only the video, but the corresponding audio, creating a much more pleasant experience for the viewer.
+
+https://twitter.com/jnebrera/status/1687512152616169472?s=20
+
 # And later?
 
 Of course, this is an ongoing project with things to do:
