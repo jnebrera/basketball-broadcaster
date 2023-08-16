@@ -1,11 +1,11 @@
 from norfair import Tracker
 from norfair.camera_motion import MotionEstimator
 from norfair.distances import mean_euclidean
-from run_utils import get_main_ball
 from soccer import Player
-from inference import Converter
+from converter import Converter
 from PIL import Image
 import numpy as np
+from soccer import Ball, Match
 
 class PBTracker:
     def __init__(self):
@@ -54,8 +54,37 @@ class PBTracker:
 
         return player_detections, ball_detections
 
+    def get_main_ball(self, detections, match=None):
+        """
+        Gets the main ball from a list of balls detection
+
+        The match is used in order to set the color of the ball to
+        the color of the team in possession of the ball.
+
+        Parameters
+        ----------
+        detections : List[Detection]
+            List of detections
+        match : Match, optional
+            Match object, by default None
+
+        Returns
+        -------
+        Ball
+            Main ball
+        """
+        ball = Ball(detection=None)
+
+        if match:
+            ball.set_color(match)
+
+        if detections:
+            ball.detection = detections[0]
+
+        return ball
+
     def draw_detections(self, frame: Image, player_detections, ball_detections) -> Image:
-        ball = get_main_ball(ball_detections)
+        ball = self.get_main_ball(ball_detections)
         players = Player.from_detections(detections=player_detections, teams=[])
         frame = Player.draw_players(
             players=players, frame=frame, confidence=False, id=True
