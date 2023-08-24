@@ -2,6 +2,7 @@ from yolov8 import YOLOv8
 import norfair
 import numpy as np
 import cv2
+from shapely import Polygon, LineString
 
 def to_norfair_detections(boxes, scores, class_name):
     detections = []
@@ -25,8 +26,9 @@ def to_norfair_detections(boxes, scores, class_name):
     return detections
 
 class PBDetector:
-    def __init__(self):
-        self.detector = YOLOv8('yolov8n.pt')
+    def __init__(self, court_region):
+        self.detector = YOLOv8('yolov8n.pt') # 'yolov8n.pt', 'yolov8s.pt', 'yolov8m.pt', 'yolov8l.pt'
+        self.court_region = Polygon(court_region)
 
     def detect(self, img):
         boxes, scores, cls_ids = self.detector.detect(img)
@@ -36,8 +38,10 @@ class PBDetector:
         b_scores = []
         for box, score, cls_id in zip(boxes, scores, cls_ids):
             if cls_id == 0: # person
-                p_boxes.append(box)
-                p_scores.append(score)
+                feet_line = LineString([[box[0], box[3]], [box[2], box[3]]])
+                if feet_line.within(self.court_region):
+                    p_boxes.append(box)
+                    p_scores.append(score)
             elif cls_id == 32: # sports ball
                 b_boxes.append(box)
                 b_scores.append(score)

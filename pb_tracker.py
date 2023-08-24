@@ -39,15 +39,15 @@ class PBTracker:
         coord_transformations = self.motion_estimator.update(frame, mask=mask)
         return coord_transformations
 
-    def run(self, frame, player_detections, ball_detections):
+    def run(self, frame, player_detections, ball_detections, period=1):
         detections = ball_detections + player_detections
         coord_transformations = self.update_motion_estimator(detections, frame)
         player_track_objects = self.player_tracker.update(
-            detections=player_detections, coord_transformations=coord_transformations
+            detections=player_detections, period=period, coord_transformations=coord_transformations
         )
 
         ball_track_objects = self.ball_tracker.update(
-            detections=ball_detections, coord_transformations=coord_transformations
+            detections=ball_detections, period=period, coord_transformations=coord_transformations
         )
         player_detections = Converter.TrackedObjects_to_Detections(player_track_objects)
         ball_detections = Converter.TrackedObjects_to_Detections(ball_track_objects)
@@ -82,7 +82,7 @@ class PBTracker:
 
     def draw_detections(self, frame: Image, player_detections, ball_detections) -> Image:
         ball = self.get_main_ball(ball_detections)
-        players = Player.from_detections(detections=player_detections, teams=[])
+        players = Player.from_detections(detections=player_detections)
         frame = Player.draw_players(
             players=players, frame=frame, confidence=False, id=True
         )

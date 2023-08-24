@@ -5,10 +5,8 @@ import numpy as np
 import PIL
 from norfair import Detection
 
-from soccer.ball import Ball
-from soccer.draw import Draw
-from soccer.team import Team
-
+from ball import Ball
+from draw import Draw
 
 class Player:
     def __init__(self, detection: Detection):
@@ -267,7 +265,7 @@ class Player:
 
     @staticmethod
     def from_detections(
-        detections: List[Detection], teams=List[Team]
+        detections: List[Detection]
     ) -> List["Player"]:
         """
         Create a list of Player objects from a list of detections and a list of teams.
@@ -292,11 +290,6 @@ class Player:
         for detection in detections:
             if detection is None:
                 continue
-
-            if "classification" in detection.data:
-                team_name = detection.data["classification"]
-                team = Team.from_name(teams=teams, name=team_name)
-                detection.data["team"] = team
 
             player = Player(detection=detection)
 
