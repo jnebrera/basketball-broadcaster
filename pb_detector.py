@@ -1,8 +1,7 @@
-from yolov8 import YOLOv8
 import norfair
 import numpy as np
-import cv2
 from shapely import Polygon, LineString
+from fab.fab import FAB
 
 def to_norfair_detections(boxes, scores, class_name):
     detections = []
@@ -27,7 +26,7 @@ def to_norfair_detections(boxes, scores, class_name):
 
 class PBDetector:
     def __init__(self, court_region):
-        self.detector = YOLOv8('yolov8n.pt') # 'yolov8n.pt', 'yolov8s.pt', 'yolov8m.pt', 'yolov8l.pt'
+        self.detector = FAB()
         self.court_region = Polygon(court_region)
 
     def detect(self, img):
@@ -42,7 +41,7 @@ class PBDetector:
                 if feet_line.within(self.court_region):
                     p_boxes.append(box)
                     p_scores.append(score)
-            elif cls_id == 32: # sports ball
+            elif cls_id == 1: # ball
                 b_boxes.append(box)
                 b_scores.append(score)
 
