@@ -1,7 +1,7 @@
 import norfair
 import numpy as np
 from shapely import Polygon, LineString
-from fab.fab import FAB
+from rtmdet_onnx.rtmdet import RTMDet
 
 def to_norfair_detections(boxes, scores, class_name):
     detections = []
@@ -26,7 +26,7 @@ def to_norfair_detections(boxes, scores, class_name):
 
 class PBDetector:
     def __init__(self, court_region):
-        self.detector = FAB()
+        self.detector = RTMDet('models/rtmdet_m/end2end.onnx')
         self.court_region = Polygon(court_region)
 
     def detect(self, img):
